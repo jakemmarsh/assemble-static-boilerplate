@@ -1,0 +1,13 @@
+---
+layout: default.hbs
+title: Team
+---
+
+<ul>
+  {{#each data.team}}
+    <li>
+      <h2>{{ name }}</h2>
+      <h3> {{ title }}</h3>
+    </li>
+  {{/each}}
+</ul>

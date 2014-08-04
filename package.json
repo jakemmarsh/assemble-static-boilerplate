@@ -1,0 +1,39 @@
+{
+  "name": "assemble-gulp-static-boilerplate",
+  "version": "0.1.0",
+  "author": "Jake Marsh <jakemmarsh@gmail.com>",
+  "description": "A boilerplate using Assemble and Gulp to quickly and efficiently create static websites.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakemmarsh/assemble-gulp-static-boilerplate.git"
+  },
+  "keywords": [
+    "express",
+    "gulp",
+    "assemble",
+    "sass",
+    "static",
+    "boilerplate"
+  ],
+  "private": true,
+  "engines": {
+    "node": ">=0.10.26"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.6",
+    "gulp-browserify": "^0.5.0",
+    "gulp-sass": "^0.7.2",
+    "gulp-jshint": "^1.8.3",
+    "connect-livereload": "^0.4.0",
+    "morgan": "^1.2.2",
+    "express": "^4.7.2",
+    "gulp-livereload": "^2.1.0",
+    "tiny-lr": "0.0.9",
+    "gulp-uglify": "^0.3.1",
+    "gulp-rename": "^1.2.0",
+    "assemble": "^0.4.41",
+    "jquery": "^2.1.1",
+    "gulp-assemble": "^0.1.7",
+    "gulp-htmlmin": "^0.1.3"
+  }
+}
