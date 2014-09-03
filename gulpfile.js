@@ -6,6 +6,8 @@ var gulp           = require('gulp'),
     uglify         = require('gulp-uglify'),
     assemble       = require('gulp-assemble'),
     htmlmin        = require('gulp-htmlmin'),
+    imagemin       = require('gulp-imagemin'),
+    pngcrush       = require('imagemin-pngcrush'),
     sass           = require('gulp-sass'),
     rename         = require('gulp-rename'),
     refresh        = require('gulp-livereload'),
@@ -77,6 +79,19 @@ gulp.task('styles', function() {
 
 // Pages task
 gulp.task('pages', function() {
+// Images task
+gulp.task('images', function() {
+
+  // Run imagemin task on all images
+  return gulp.src('public/images/**/*')
+          .pipe(imagemin({
+              progressive: true,
+              svgoPlugins: [{removeViewBox: false}],
+              use: [pngcrush()]
+          }))
+          .pipe(gulp.dest('build/images'));
+
+});
 
   // Run assemble on static pages
   gulp.src('./public/templates/pages/**/*.hbs')
@@ -101,6 +116,10 @@ gulp.task('watch', function() {
   // Watch our templates
   gulp.watch(['public/templates/**/*.hbs', 'public/data/*.json', 'public/helpers/*.js'], [
     'pages'
+  // Watch our images
+  gulp.watch(['public/images/**/*'], [
+    'images'
+  ]);
   ]);
 
 });
