@@ -1,0 +1,50 @@
+// base unit
+$base:        24px;
+$base--half:  $base / 2;
+$base--third: $base / 3;
+
+// fonts
+$font-size--xs: 10px;
+$font-size--sm: 12px;
+$font-size--md: 16px;
+$font-size--lg: 24px;
+$font-size--xl: 32px;
+
+.heading {
+  margin-bottom: 0.618em;
+
+  &.-large {
+    font-size: $font-size--lg;
+    font-weight: bold;
+    line-height: $base * 3 / 2;
+  }
+
+  &.-medium {
+    font-size: $font-size--md;
+    font-weight: normal;
+    line-height: $base;
+  }
+
+  &.-small {
+    font-size: $font-size--sm;
+    font-weight: bold;
+    line-height: $base * 2 / 3;
+  }
+
+  &.-smallest {
+    font-size: $font-size--xs;
+    font-weight: bold;
+  }
+}
+
+h1 {
+  @extend .heading.-large;
+}
+
+h2 {
+  @extend .heading.-medium;
+}
+
+h3 {
+  @extend .heading.-small;
+}
