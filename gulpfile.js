@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp           = require('gulp'),
+    clean          = require('gulp-clean'),
     jshint         = require('gulp-jshint'),
     browserify     = require('gulp-browserify'),
     uglify         = require('gulp-uglify'),
@@ -40,12 +41,19 @@ server.use(express.static('./build'));
   Gulp Tasks
  ***********************************************/
 
+ gulp.task('clean', function() {
+
+  return gulp.src('build/', {read: false})
+          .pipe(clean());
+
+ });
+
 // JSHint task
 gulp.task('lint', function() {
 
-  gulp.src('./public/js/**/*.js')
-  .pipe(jshint())
-  .pipe(jshint.reporter('default'));
+  return gulp.src('./public/js/**/*.js')
+          .pipe(jshint())
+          .pipe(jshint.reporter('default'));
 
 });
 
@@ -53,32 +61,30 @@ gulp.task('lint', function() {
 gulp.task('browserify', function() {
 
   // Single point of entry (make sure not to src ALL your files, browserify will figure it out for you)
-  gulp.src(['public/js/main.js'])
-  .pipe(browserify({
-    insertGlobals: true,
-    debug: true
-  }))
-  .pipe(uglify())
-  .pipe(rename({suffix: '.min'}))
-  .pipe(gulp.dest('build/js'))
-  .pipe(refresh(lrserver));
+  return gulp.src(['public/js/main.js'])
+          .pipe(browserify({
+            insertGlobals: true,
+            debug: true
+          }))
+          .pipe(uglify())
+          .pipe(rename({suffix: '.min'}))
+          .pipe(gulp.dest('build/js'))
+          .pipe(refresh(lrserver));
 
 });
 
 // Styles task
 gulp.task('styles', function() {
 
-  gulp.src('public/styles/main.scss')
-  // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
-  .pipe(sass({style: 'compressed', onError: function(e) { console.log(e); } }))
-  .pipe(rename({suffix: '.min'}))
-  .pipe(gulp.dest('build/css/'))
-  .pipe(refresh(lrserver));
+  return gulp.src('public/styles/main.scss')
+          // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
+          .pipe(sass({style: 'compressed', onError: function(e) { console.log(e); } }))
+          .pipe(rename({suffix: '.min'}))
+          .pipe(gulp.dest('build/css/'))
+          .pipe(refresh(lrserver));
 
 });
 
-// Pages task
-gulp.task('pages', function() {
 // Images task
 gulp.task('images', function() {
 
@@ -93,12 +99,14 @@ gulp.task('images', function() {
 
 });
 
+// Assemble task
+gulp.task('assemble', function() {
+
   // Run assemble on static pages
-  gulp.src('./public/templates/pages/**/*.hbs')
-  .pipe(assemble(assembleOptions))
-  .pipe(htmlmin())
-  .pipe(gulp.dest('_gh_pages/'))
-  .pipe(gulp.dest('build/'));
+  return gulp.src('./public/pages/**/*.hbs')
+          .pipe(assemble(assembleOptions))
+          .pipe(htmlmin())
+          .pipe(gulp.dest('build/'));
 
 });
 
@@ -113,13 +121,13 @@ gulp.task('watch', function() {
   gulp.watch(['public/styles/**/*.scss'], [
     'styles'
   ]);
-  // Watch our templates
-  gulp.watch(['public/templates/**/*.hbs', 'public/data/*.json', 'public/helpers/*.js'], [
-    'pages'
   // Watch our images
   gulp.watch(['public/images/**/*'], [
     'images'
   ]);
+  // Watch our templates, helpers, and data files
+  gulp.watch(['public/pages/**/*.hbs', 'public/templates/**/*.hbs', 'public/data/*.json', 'public/helpers/*.js'], [
+    'assemble'
   ]);
 
 });
@@ -132,8 +140,11 @@ gulp.task('dev', function() {
   // Start live reload
   lrserver.listen(livereloadport);
 
+  // Clean build directory
+  gulp.start('clean');
+
   // Run all tasks once
-  gulp.start(['browserify', 'styles', 'pages']);
+  gulp.start(['browserify', 'styles', 'images', 'assemble']);
 
   // Then, run the watch task to keep tabs on changes
   gulp.start('watch');
