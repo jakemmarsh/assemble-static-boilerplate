@@ -3,11 +3,12 @@ layout: default.hbs
 title: Team
 ---
 
+<h1>Team Members:</h1>
 <ul>
   {{#each team}}
     <li>
-      <h2>{{ name }}</h2>
-      <h3> {{ title }}</h3>
+      <h2>{{ this.name }}</h2>
+      <h3> {{ this.title }}</h3>
     </li>
   {{/each}}
 </ul>
