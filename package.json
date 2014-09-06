@@ -31,7 +31,6 @@
     "tiny-lr": "0.0.9",
     "gulp-uglify": "^0.3.1",
     "gulp-rename": "^1.2.0",
-    "assemble": "^0.4.41",
     "jquery": "^2.1.1",
     "gulp-assemble": "^0.1.7",
     "gulp-htmlmin": "^0.1.3",

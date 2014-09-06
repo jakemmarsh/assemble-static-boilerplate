@@ -16,13 +16,13 @@ var gulp           = require('gulp'),
     morgan         = require('morgan'),
     express        = require('express'),
     livereload     = require('connect-livereload'),
-    livereloadport = 35729,
+    livereloadport = 35728,
     serverport     = 3000;
 
 var assembleOptions = {
-  data:      'public/data/*.json',
-  helpers:   'public/helpers/*.js',
-  partials:  'public/templates/partials/*.hbs',
+  data:      'public/data/**/*.json',
+  helpers:   'public/helpers/**/*.js',
+  partials:  'public/templates/partials/**/*.hbs',
   layoutdir: 'public/templates/layouts/'
 };
 
