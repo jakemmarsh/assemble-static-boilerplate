@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp           = require('gulp'),
+    runSequence    = require('run-sequence'),
     clean          = require('gulp-clean'),
     jshint         = require('gulp-jshint'),
     browserify     = require('gulp-browserify'),
@@ -121,10 +122,6 @@ gulp.task('watch', function() {
   gulp.watch(['public/styles/**/*.scss'], [
     'styles'
   ]);
-  // Watch our images
-  gulp.watch(['public/images/**/*'], [
-    'images'
-  ]);
   // Watch our templates, helpers, and data files
   gulp.watch(['public/pages/**/*.hbs', 'public/templates/**/*.hbs', 'public/data/*.json', 'public/helpers/*.js'], [
     'assemble'
@@ -144,9 +141,28 @@ gulp.task('dev', function() {
   gulp.start('clean');
 
   // Run all tasks once
-  gulp.start(['browserify', 'styles', 'images', 'assemble']);
+  runSequence('styles', 'browserify', 'assemble');
+
+  // Copy images into build directory since we're not compressing
+  gulp.src('public/images/**/*').pipe(gulp.dest('build/images'));
 
   // Then, run the watch task to keep tabs on changes
   gulp.start('watch');
+
+});
+
+
+// Deploy task
+gulp.task('deploy', function() {
+
+  // Deploy to your hosting setup
+
+});
+
+// Production task
+gulp.task('prod', function() {
+
+  // Run all tasks
+  runSequence('styles', 'images', 'browserify', 'assemble', 'deploy');
 
 });

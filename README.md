@@ -123,6 +123,10 @@ The resulting file (`main.min.js`) is placed inside the directory `/build/js/`.
 
 Just one task is necessary for processing our SASS files, and that is `gulp-sass`. This will read the `main.scss` file, processing and importing any dependencies and then minifying the result. This file (`main.min.css`) is placed inside the directory `/build/css/`.
 
+##### Images
+
+Any images placed within `/app/images` will be compressed via imagemin, and the compressed images will be placed within the `/build/images` directory when preparing for production.
+
 ##### Data, Helpers, Pages, Partials, and Templates
 
 These are all of the files used to actually build your static site via Assemble. Just one task (`assemble`) is run to process all of these files via Assemble, generating the corresponding static site files and placing them in the `/build` directory.
@@ -130,3 +134,7 @@ These are all of the files used to actually build your static site via Assemble.
 ##### Watching files
 
 All of the Gulp processes mentioned above are run automatically when any of the corresponding files in the `/public` directory are changed, and this is thanks to our Gulp watch tasks. Running `gulp dev` will begin watching all of these files, while also serving to `localhost:3000`.
+
+##### Production Task
+
+Just as there is the `gulp dev` task for development, there is also a `gulp prod` task for putting your project into a production-ready state. This will run each of the tasks, while also adding the `image` task discussed above. There is also an empty `gulp deploy` task that is included when running the production task. This deploy task can be fleshed out to automatically push your production-ready site to your hosting setup.
