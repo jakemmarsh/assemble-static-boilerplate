@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp           = require('gulp'),
+    gulpif         = require('gulp-if'),
     runSequence    = require('run-sequence'),
     clean          = require('gulp-clean'),
     jshint         = require('gulp-jshint'),
@@ -18,7 +19,8 @@ var gulp           = require('gulp'),
     express        = require('express'),
     livereload     = require('connect-livereload'),
     livereloadport = 35728,
-    serverport     = 3000;
+    serverport     = 3000,
+    isProd         = false;
 
 var assembleOptions = {
   data:      'public/data/**/*.json',
@@ -67,7 +69,7 @@ gulp.task('browserify', function() {
             insertGlobals: true,
             debug: true
           }))
-          .pipe(uglify())
+          .pipe(gulpif(isProd, uglify()))
           .pipe(rename({suffix: '.min'}))
           .pipe(gulp.dest('build/js'))
           .pipe(refresh(lrserver));
@@ -79,7 +81,10 @@ gulp.task('styles', function() {
 
   return gulp.src('public/styles/main.scss')
           // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
-          .pipe(sass({style: 'compressed', onError: function(e) { console.log(e); } }))
+          .pipe(sass({
+            style: isProd ? 'compressed' : 'expanded',
+            onError: function(e) { console.log(e); }
+          }))
           .pipe(rename({suffix: '.min'}))
           .pipe(gulp.dest('build/css/'))
           .pipe(refresh(lrserver));
@@ -106,7 +111,7 @@ gulp.task('assemble', function() {
   // Run assemble on static pages
   return gulp.src('./public/pages/**/*.hbs')
           .pipe(assemble(assembleOptions))
-          .pipe(htmlmin())
+          .pipe(gulpif(isProd, htmlmin()))
           .pipe(gulp.dest('build/'));
 
 });
@@ -131,6 +136,8 @@ gulp.task('watch', function() {
 
 // Dev task
 gulp.task('dev', function() {
+
+  isProd = false;
 
   // Start webserver
   server.listen(serverport);
@@ -161,6 +168,8 @@ gulp.task('deploy', function() {
 
 // Production task
 gulp.task('prod', function() {
+
+  isProd = true;
 
   // Run all tasks
   runSequence('styles', 'images', 'browserify', 'assemble', 'deploy');
