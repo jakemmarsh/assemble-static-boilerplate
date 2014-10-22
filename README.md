@@ -3,6 +3,8 @@ assemble-static-boilerplate
 
 A boilerplate using Assemble and Gulp to quickly and efficiently create static websites.
 
+**Warning:** There is currently a bug in `gulp-assemble` that prevents data from being passed to templates. I have created an issue [here](https://github.com/assemble/gulp-assemble/issues/8). For now, data can be utilized by wrapping your JSON objects in a `module.exports` in a normal `.js` file, and importing it/working with it from there.
+
 ---
 
 ### Getting up and running
